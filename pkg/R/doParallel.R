@@ -141,16 +141,7 @@ comp <- if (getRversion() < "2.13.0") {
   }
 }
 
-
-parSpl <- try(parallel::splitList, silent=TRUE)
-## Use the "splitList" function from parallel if it's exported
-## Otherwise, use the definition it had in R 3.0.2.
-"splitList" <- if (inherits(parSpl, "try-error")) {
-    function (x, ncl) 
-	lapply(splitIndices(length(x), ncl), function(i) x[i])
-} else {
-	parSpl
-}
+splitList <- function (x, ncl) lapply(splitIndices(length(x), ncl), function(i) x[i])
 
 doParallelMC <- function(obj, expr, envir, data) {
   # set the default mclapply options
@@ -522,3 +513,4 @@ doParallelSNOW <- function(obj, expr, envir, data) {
     getResult(it)
   }
 }
+
